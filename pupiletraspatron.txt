@@ -1,0 +1,123 @@
+#include<iostream>
+#include<time.h>
+#include<stdlib.h>
+#include<conio.h>
+#include <Windows.h>
+#include <iomanip>
+
+using namespace std;
+
+
+
+void genera_y_muestra_matriz( char** matrizCaracteres)
+{
+	
+	char letras[] = "ABCDEFGHIJKLMN\xA4OPQRSTUVWXYZ";
+	int numdeletras = sizeof(letras) / sizeof(letras[0]) - 1;
+
+	srand(time(0));
+
+	for (int i = 0; i < 10; i++) {
+		for (int j = 0; j < 10; j++)
+		{
+
+			matrizCaracteres[i][j] = letras[rand() % numdeletras];//Agrega numero aleatorio a la posicion ij de la matriz;
+		}
+
+	}
+
+	for (int i = 0; i < 10; i++)
+	{
+		for (int j = 0; j < 10; j++)
+			cout << matrizCaracteres[i][j] << "\t";
+
+		cout << endl;
+	}
+	
+}
+
+char* genera_secuencia(char letra) {
+	char* secuencia = new char[4];
+	secuencia[0] = letra;
+	secuencia[1] = letra + 1;
+	secuencia[2] = letra + 2;
+	secuencia[3] = letra + 3;
+	return secuencia;
+}
+
+void cantidad_veces(char ** matriz, char* secuencia) {
+	int contadorPrimerCaracter = 0;
+	int contadorSegundoCaracter = 0;
+	int contadorTercerCaracter = 0;
+	int contadorCuartoCaracter = 0;
+
+	for (int i = 0; i < 10; i++) {
+		for (int j = 0; j < 10; j++) {
+			if (secuencia[0] == matriz[i][j]) {
+				contadorPrimerCaracter++;
+			}
+			if (secuencia[1] == matriz[i][j]) {
+				contadorSegundoCaracter++;
+			}
+			if (secuencia[2] == matriz[i][j]) {
+				contadorTercerCaracter++;
+			}
+			if (secuencia[3] == matriz[i][j]) {
+				contadorCuartoCaracter++;
+			}
+		}
+	}
+	cout << "Caracter " << secuencia[0] << " aparece " << contadorPrimerCaracter << " veces" << endl;
+	cout << "Caracter " << secuencia[1] << " aparece " << contadorSegundoCaracter << " veces" << endl;
+	cout << "Caracter " << secuencia[2] << " aparece " << contadorTercerCaracter << " veces" << endl;
+	cout << "Caracter " << secuencia[3] << " aparece " << contadorCuartoCaracter << " veces" << endl;
+}
+
+void secuencia_en_matriz(char **matriz, char* secuencia) {
+	int apariciones = 0;
+	cout << "Los puntos donde aparece la secuencia de vocales en forma diagonal son: " << endl;
+	for (int i = 4; i < 10; i++) {
+		for (int j = 0; j < 10 - 4; j++) {
+			if (matriz[i][j] == secuencia[0] && matriz[i - 1][j + 1] == secuencia[1] && matriz[i - 1][j + 2] == secuencia[2]) {
+				apariciones++;
+				cout << "FILA: " << i << " COLUMNA: " << j << endl;
+			}
+		}
+	}
+	cout << "Total de apariciones: " << apariciones << endl;
+	cout << endl;
+}
+
+
+int main()
+{
+
+	string palabra;
+
+
+	char** matrizCaracteres;
+	matrizCaracteres = new char* [10];
+	for (int i = 0; i < 10; i++)
+		matrizCaracteres[i] = new char[10];
+	genera_y_muestra_matriz( matrizCaracteres);
+	
+	char letra;
+
+	cout << "Introduzca letra de la secuencia: ";
+	cin >> letra;
+
+	char* secuencia = genera_secuencia(letra);
+
+	cantidad_veces(matrizCaracteres, secuencia);
+
+	secuencia_en_matriz(matrizCaracteres, secuencia);
+
+	
+
+
+	for (int i = 0; i < 10; i++)
+		delete[] matrizCaracteres[i];
+	delete[] matrizCaracteres;
+
+	return 0;
+}
